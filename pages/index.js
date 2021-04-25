@@ -19,43 +19,43 @@ export async function getStaticProps() {
   //     }
   //   }
   // }
-  const res = await fetch('https://api.github.com/graphql', {
-    method: 'POST',
-    headers: {
-      Authorization: `bearer ${process.env.GITHUB_TOKEN}`
-    },
-    body: JSON.stringify({
-      query: `query {
-        repository(owner:"chibicode", name:"reactions") {
-          issue(number:1) {
-            reactionGroups {
-              content
-              users(first: 0) {
-                totalCount
-              }
-            }
-          }
-        }
-      }`
-    })
-  })
+//   const res = await fetch('https://api.github.com/graphql', {
+//     method: 'POST',
+//     headers: {
+//       Authorization: `bearer ${process.env.GITHUB_TOKEN}`
+//     },
+//     body: JSON.stringify({
+//       query: `query {
+//         repository(owner:"chibicode", name:"reactions") {
+//           issue(number:1) {
+//             reactionGroups {
+//               content
+//               users(first: 0) {
+//                 totalCount
+//               }
+//             }
+//           }
+//         }
+//       }`
+//     })
+//   })
 
-  const json = await res.json()
-  if (res.status !== 200) {
-    console.error(json)
-    throw new Error('Failed to fetch API')
-  }
+//   const json = await res.json()
+//   if (res.status !== 200) {
+//     console.error(json)
+//     throw new Error('Failed to fetch API')
+//   }
 
-  // [0, 0, 0, 0, 0, 0, 0, 0]
-  const reactions = json.data.repository.issue.reactionGroups.map(
-    (item) => item.users.totalCount
-  )
+//   // [0, 0, 0, 0, 0, 0, 0, 0]
+//   const reactions = json.data.repository.issue.reactionGroups.map(
+//     (item) => item.users.totalCount
+//   )
 
   return {
     props: {
-      reactions
+      reactions: {}
     },
-    revalidate: 20
+    revalidate: 60
   }
 }
 
@@ -95,21 +95,21 @@ export default function Home({ reactions }) {
         <div className='line'>
           <span className='emoji'>😄</span> <strong>345</strong>
         </div>
-        <div className='line'>
-          <span className='emoji'>🎉</span> <strong>{reactions[3]}</strong>
-        </div>
-        <div className='line'>
-          <span className='emoji'>😕</span> <strong>{reactions[4]}</strong>
-        </div>
-        <div className='line'>
-          <span className='emoji'>🧡</span> <strong>{reactions[5]}</strong>
-        </div>
-        <div className='line'>
-          <span className='emoji'>🚀</span> <strong>{reactions[6]}</strong>
-        </div>
-        <div className='line'>
-          <span className='emoji'>👀</span> <strong>{reactions[7]}</strong>
-        </div>
+//         <div className='line'>
+//           <span className='emoji'>🎉</span> <strong>{reactions[3]}</strong>
+//         </div>
+//         <div className='line'>
+//           <span className='emoji'>😕</span> <strong>{reactions[4]}</strong>
+//         </div>
+//         <div className='line'>
+//           <span className='emoji'>🧡</span> <strong>{reactions[5]}</strong>
+//         </div>
+//         <div className='line'>
+//           <span className='emoji'>🚀</span> <strong>{reactions[6]}</strong>
+//         </div>
+//         <div className='line'>
+//           <span className='emoji'>👀</span> <strong>{reactions[7]}</strong>
+//         </div>
         <br />
         <div>
           <strong>Explanation:</strong> This page is statically generated with <a href="https://nextjs.org/">Next.js</a> by fetching data from GitHub. It’s deployed to{' '}
@@ -121,7 +121,7 @@ export default function Home({ reactions }) {
         </div>
         <ol>
           <li>
-            Each Next.js page can define the timeout. For this page, it’s set at 1 second.
+            Each Next.js page can define the timeout. For this page, it’s set at 60 second.
           </li>
           <li>
             When a new request comes in, the statically generated page is
